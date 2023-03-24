@@ -5,7 +5,7 @@ import requests
 result = 0
 port = 0
 sus = 0
-print("Uptimer 1.1 build 2") #version
+print("Uptimer 1.1.1 build 1") #version
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -17,7 +17,7 @@ print("methods:") #methods
 print("ping - the easiest verification method !dont work with ports! (can be blocked by host)") # ping method
 print("natcat - UDP/TCP verification method (work only on Unix systems)") # natcat method
 print("HTTP - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
-print("nmap - UDP/TCP verification method (work only on Unix systems)")
+print("nmap - UDP/TCP verification method (work only on Unix systems) (this method is not very effective)")
 
 method = input("method: ")
 print()
@@ -56,8 +56,15 @@ if method == "natcat" : # natcat method start
   ip = input("host: ") # IP
   print()
   port = input("Port: ") #port
+  print()
+  print("use udp - y / tcp - n")
+  udptr = input("")
   while True :
-    nc = os.system("nc -vz " + ip + " " + port) # using ip and port nat cat
+    if udptr == "n" : 
+     nc = os.system("nc -vz " + ip + " " + port) # using ip and port nat cat
+
+    if udptr == "y" :
+     nc = os.system("nc -vnzu " + ip + " " + port) # using ip and port nat cat
 
     if nc == 0:
          print("Server is ok") # OK res
