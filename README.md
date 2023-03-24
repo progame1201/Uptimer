@@ -15,6 +15,7 @@ Opportunities:
 Set the time after which the request will be sent.
 link a discord webhook with your own error message.
 Maximum number of incorrect answers of host: 2.
+the program is free
 
 In the future, the program will be refined and use newer methods.
 
