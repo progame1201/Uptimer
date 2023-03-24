@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 import os
 from time import sleep
 import requests 
 result = 0
 port = 0
 sus = 0
-print("Uptimer 1.0 build 4") #version
+print("Uptimer 1.1 build 2") #version
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -13,9 +14,10 @@ print("Rysik5318#7967 - help in the implementation of the idea, as well as in th
 sleep(2)
 print()
 print("methods:") #methods
-print("ping - the easiest verification method !dont work with ports!. Can be blocked by host") # ping method
-print("natcat - UDP/TCP verification method. Work only on Unix systems") # natcat method
-print("HTTP - HTTP/S verification method !dont work with IP and ports!. Can be blocked by host") # HTTP method
+print("ping - the easiest verification method !dont work with ports! (can be blocked by host)") # ping method
+print("natcat - UDP/TCP verification method (work only on Unix systems)") # natcat method
+print("HTTP - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
+print("nmap - UDP/TCP verification method (work only on Unix systems)")
 
 method = input("method: ")
 print()
@@ -94,3 +96,22 @@ if method == "http" : # HTTP method start
      requests.post(discordurl, data=param)
      sus = 0
     sleep(int(sleept)) # HTTP method end
+
+if method == "nmap" : # nmap method start
+  ip = input("IP: ")
+  port = input("port: ")
+  while True :
+    status = os.system("nmap -p " + port + " " + ip)
+    if status == 0 :
+         print("server is ok") # OK res
+         result = True
+
+    else:
+        print("server error on connect!") # bad res
+        result = False
+        sus = sus + 1
+
+    if sus == 2 :
+     requests.post(discordurl, data=param)
+     sus = 0
+    sleep(int(sleept)) # nmap method end
