@@ -1,22 +1,14 @@
 # Uptimer
-Uptimer - a simple python program that tracks server crashes or DDoS (DoS).
+Uptimer
+A simple python program to check if an ip/a domain is available
 
-You need to run:
-Python(3.9-3.10).
-requests module (https://pypi.org/project/requests/).
-OS: Wndows or Linux(the program tested in ubuntu).
+Requirements
+Python (https://python.org/)
+requests module (cmd -> pip install requests)
 
-Methods:
-ping - Just an implemented method, uses a regular ping.
-natcat - The netcat method can use ports, but is only available on Unix systems.
-http - Sends a head request to the site and waits for a 200 response (If you use CloudFlare to protect your site, allow the IP address from which the request will be sent).
+Available methods
+ping - simply sends a ping to an ip
+natcat - same as ping but allows ports specification (only available from unix systems)
+http - sends a head request to a domain and does not stop until 200 response (may encounter difficulties with anti ddos services) 
 
-Opportunities:
-Set the time after which the request will be sent.
-link a discord webhook with your own error message.
-Maximum number of incorrect answers of host: 2.
-the program is free
-
-In the future, the program will be refined and use newer methods.
-
-Thank you very much: Rysik5318#7967 and EVA#1130 for assistance in the implementation of the project.
+Special thanks to: @Rysik5318#7967 and @EVA#1130
