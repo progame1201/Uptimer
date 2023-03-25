@@ -2,10 +2,12 @@
 import os
 from time import sleep
 import requests 
+import urllib3
 result = 0
 port = 0
 sus = 0
-print("Uptimer 1.1.2 build 3") #version
+errcode = "Incorrect response from the host"
+print("Uptimer 1.2.0 build 13") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -16,7 +18,8 @@ print()
 print("methods:") #methods
 print("ping - the easiest verification method !dont work with ports! (can be blocked by host)") # ping method
 print("natcat - UDP/TCP verification method (work only on Unix systems)") # natcat method
-print("http - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
+print("request - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
+print("urllib - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)")
 
 method = input("method: ")
 print()
@@ -26,8 +29,17 @@ discordurl = input("discord wbhook url: ") # discord webhook url setting
 
 discordcont = input("discord message on error: ") # discord messege setting
 
-param = {"content": discordcont} # discord messege
-
+param = {
+  "content": discordcont,
+  "embeds": [
+    {
+      "title": "Request error!",
+      "description": errcode,
+      "color": 16711680
+    }
+  ],
+  "attachments": []
+} # discord messege
 if method == "ping": # ping method start
  print()
  ip = input("host: ") # IP
@@ -42,9 +54,10 @@ if method == "ping": # ping method start
     print("server error on connect!") # bad res
     sus = sus + 1
     result = False
+    errcode = response
 
     if sus == 2 :
-     requests.post(discordurl, data=param)
+     requests.post(discordurl, json = param)
      sus = 0
    sleep(int(sleept)) # ping method end
 
@@ -72,14 +85,15 @@ if method == "natcat" : # natcat method start
     else:
         print("server error on connect!") # bad res
         result = False
+        errcode = nc
         sus = sus + 1
 
     if sus == 2 :
-     requests.post(discordurl, data=param)
+     requests.post(discordurl, json = param)
      sus = 0
     sleep(int(sleept)) # natcat method end
 
-if method == "http" : # HTTP method start
+if method == "request" : # HTTP method start
   ru = input("URL: ")
   print("requests types:")
   print("1 - HEAD")
@@ -88,11 +102,11 @@ if method == "http" : # HTTP method start
   rtype = input("Type: ") 
   while True :
     if rtype == "1" :
-     r = requests.head(ru)
+     r = requests.head(ru) #head
     if rtype == "2" :
-     r = requests.post(ru)
+     r = requests.post(ru) #post
     if rtype == "3" :
-     r = requests.get(ru)
+     r = requests.get(ru) #get
     status = r.status_code
     print(status)
 
@@ -103,10 +117,43 @@ if method == "http" : # HTTP method start
     else:
         print("server error on connect!") # bad res
         result = False
-        errcode = r.status_code
+        errcode = str(r.status_code)
         sus = sus + 1
 
     if sus == 2 :
-     requests.post(discordurl, data=param)
+     requests.post(discordurl, json = param)
      sus = 0
     sleep(int(sleept)) # HTTP method end
+
+if method == "urllib" : # urllib method start
+   url = input("URL: ")
+   print("requests types:")
+   print("1 - HEAD")
+   print("2 - POST")
+   print("3 - GET")
+   rtype = input("Type: ") 
+   while True :
+     http = urllib3.PoolManager()
+     if rtype == "1" :
+      i100 = http.request('HEAD', url) #head
+     if rtype == "2"   :
+      i100 = http.request('POST', url) #post
+     if rtype == "3"   :
+      i100 = http.request('GET', url) #get
+     status = i100.status
+     print(i100.status)
+     if status == 200 :
+         print("server is ok") # OK res
+         result = True
+
+     else:
+        print("server error on connect!") # bad res
+        result = False
+        errcode = str(i100.status)
+        sus = sus + 1
+
+     if sus == 2 :
+      requests.post(discordurl, json = param)
+      sus = 0
+     sleep(int(sleept)) #urllib method end
+
