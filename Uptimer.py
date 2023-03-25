@@ -5,7 +5,7 @@ import requests
 result = 0
 port = 0
 sus = 0
-print("Uptimer 1.1.1 build 1") #version
+print("Uptimer 1.1.2 build 2") #version
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -16,8 +16,7 @@ print()
 print("methods:") #methods
 print("ping - the easiest verification method !dont work with ports! (can be blocked by host)") # ping method
 print("natcat - UDP/TCP verification method (work only on Unix systems)") # natcat method
-print("HTTP - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
-print("nmap - UDP/TCP verification method (work only on Unix systems) (this method is not very effective)")
+print("http - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
 
 method = input("method: ")
 print()
@@ -82,10 +81,18 @@ if method == "natcat" : # natcat method start
 
 if method == "http" : # HTTP method start
   ru = input("URL: ")
+  print("requests types:")
+  print("1 - HEAD")
+  print("2 - POST")
+  print("3 - GET")
+  rtype = input("Type: ") 
   while True :
-    r = requests.head(ru)
-    print("The URL error")
-
+    if rtype == 1 :
+     r = requests.head(ru)
+    if rtype == 2 :
+     r = requests.post(ru)
+    if rtype == 3 :
+     r = requests.get(ru)
     status = r.status_code
     print(status)
 
@@ -103,22 +110,3 @@ if method == "http" : # HTTP method start
      requests.post(discordurl, data=param)
      sus = 0
     sleep(int(sleept)) # HTTP method end
-
-if method == "nmap" : # nmap method start
-  ip = input("IP: ")
-  port = input("port: ")
-  while True :
-    status = os.system("nmap -p " + port + " " + ip)
-    if status == 0 :
-         print("server is ok") # OK res
-         result = True
-
-    else:
-        print("server error on connect!") # bad res
-        result = False
-        sus = sus + 1
-
-    if sus == 2 :
-     requests.post(discordurl, data=param)
-     sus = 0
-    sleep(int(sleept)) # nmap method end
