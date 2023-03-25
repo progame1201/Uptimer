@@ -5,7 +5,7 @@ import requests
 result = 0
 port = 0
 sus = 0
-print("Uptimer 1.1.2 build 2") #version
+print("Uptimer 1.1.2 build 3") #version
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -87,11 +87,11 @@ if method == "http" : # HTTP method start
   print("3 - GET")
   rtype = input("Type: ") 
   while True :
-    if rtype == 1 :
+    if rtype == "1" :
      r = requests.head(ru)
-    if rtype == 2 :
+    if rtype == "2" :
      r = requests.post(ru)
-    if rtype == 3 :
+    if rtype == "3" :
      r = requests.get(ru)
     status = r.status_code
     print(status)
