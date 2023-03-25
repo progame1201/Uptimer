@@ -6,7 +6,7 @@ Requirements
 Python (https://python.org/)
 requests module (cmd -> pip install requests)
 
-you need to write all links with https://
+you need to write all links with https(http)://
 
 Available methods
 ping - simply sends a ping to an ip.
