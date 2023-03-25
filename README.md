@@ -2,7 +2,7 @@
 Uptimer
 A simple python program to check if an ip/a domain is available
 
-Requirements
+Requirements:
 Python (https://python.org/)
 requests module (cmd -> pip install requests)
 
