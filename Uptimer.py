@@ -3,11 +3,13 @@ import os
 from time import sleep
 import requests 
 import urllib3
+from ping3 import ping, verbose_ping
 result = 0
 port = 0
 sus = 0
+sus2 = 0
 errcode = "Incorrect response from the host"
-print("Uptimer 1.2.0 build 13") #version and build
+print("Uptimer 1.3.0, build 19") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -19,18 +21,18 @@ print("methods:") #methods
 print("ping - the easiest verification method !dont work with ports! (can be blocked by host)") # ping method
 print("natcat - UDP/TCP verification method (work only on Unix systems)") # natcat method
 print("request - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
-print("urllib - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)")
-
+print("urllib - HTTP/S verification method !dont work with IP and ports! (can be blocked by host) needs instaled urllib3 module") # urllib3 method
+print("ping3 - ping verification method. compares the ms with a certain value and if the ms is suspicious issues a warning ") # ping method
+print()
 method = input("method: ")
 print()
 sleept = input("sleep time in sec. (use 30 or 240 to get the best result): ") #sleeptime
 print()
 discordurl = input("discord wbhook url: ") # discord webhook url setting
-
+print()
 discordcont = input("discord message on error: ") # discord messege setting
-
 param = {
-  "content": discordcont,
+  "content": "Message from the user: " + discordcont,
   "embeds": [
     {
       "title": "Request error!",
@@ -39,13 +41,13 @@ param = {
     }
   ],
   "attachments": []
-} # discord messege
+} # discord message
+
 if method == "ping": # ping method start
  print()
  ip = input("host: ") # IP
  while True:
    response = os.system("ping -w 2 " + ip) # pinging
-
    if response == 0:
      print("Server is ok") # OK res
      result = True
@@ -157,3 +159,53 @@ if method == "urllib" : # urllib method start
       sus = 0
      sleep(int(sleept)) #urllib method end
 
+if method == "ping3" : #ping3 method start
+    ip = input("IP: ")
+    maxms = input("Max MS: ")
+    while True :
+     i200 = ping(ip, unit='ms')
+     print(i200)
+     if i200 != None :
+        print("server is ok!")
+     try:
+      if float(i200) >= float(maxms) :
+         print("Warning: ms > maxms!")
+         sus2 = sus2 + 1
+     except TypeError :
+         print("")
+     if i200 == None :
+         print("server error on connect!")
+         sus = sus + 1
+
+     if sus == 2 :
+      errcode = "Incorrect response from the host"
+      param = {
+          "content": "Message from the user: " + discordcont,
+          "embeds": [
+              {
+                  "title": "Request error!",
+                  "description": errcode,
+                  "color": 16711680
+              }
+          ],
+          "attachments": []
+      }
+      requests.post(discordurl, json = param)
+      sus = 0
+     if sus2 == 2 :
+      param = {
+             "content": "Message from the user: " + discordcont,
+             "embeds": [
+                 {
+                     "title": "Warning!",
+                     "description": "ms > maxms! check the host!",
+                     "color": 16763904
+                 }
+             ],
+             "attachments": []
+         }  # discord message
+      requests.post(discordurl, json = param)
+      sus2 = 0
+     sleep(int(sleept)) #ping3 method end
+print("")
+print("do you know that you need to choose a method?")
