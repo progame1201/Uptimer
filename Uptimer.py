@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from time import sleep
-import requests 
-import urllib3
-from ping3 import ping, verbose_ping
+import requests
 result = 0
 port = 0
 sus = 0
@@ -22,15 +20,15 @@ print("ping - the easiest verification method !dont work with ports! (can be blo
 print("natcat - UDP/TCP verification method (work only on Unix systems)") # natcat method
 print("request - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
 print("urllib - HTTP/S verification method !dont work with IP and ports! (can be blocked by host) needs instaled urllib3 module") # urllib3 method
-print("ping3 - ping verification method. compares the ms with a certain value and if the ms is suspicious issues a warning ") # ping method
+print("ping3 - the method is similar to ping, but also compare ms with the set maximum. Needs installed ping3 module") # ping3 method
 print()
 method = input("method: ")
 print()
 sleept = input("sleep time in sec. (use 30 or 240 to get the best result): ") #sleeptime
 print()
-discordurl = input("discord wbhook url: ") # discord webhook url setting
+discordurl = input("discord webhook url: ") # discord webhook url setting
 print()
-discordcont = input("discord message on error: ") # discord messege setting
+discordcont = input("discord message on error: ") # discord message setting
 param = {
   "content": "Message from the user: " + discordcont,
   "embeds": [
@@ -128,6 +126,7 @@ if method == "request" : # HTTP method start
     sleep(int(sleept)) # HTTP method end
 
 if method == "urllib" : # urllib method start
+   import urllib3
    url = input("URL: ")
    print("requests types:")
    print("1 - HEAD")
@@ -160,6 +159,7 @@ if method == "urllib" : # urllib method start
      sleep(int(sleept)) #urllib method end
 
 if method == "ping3" : #ping3 method start
+    from ping3 import ping, verbose_ping
     ip = input("IP: ")
     maxms = input("Max MS: ")
     while True :
