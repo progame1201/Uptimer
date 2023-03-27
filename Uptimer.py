@@ -6,14 +6,17 @@ result = 0
 port = 0
 sus = 0
 sus2 = 0
+UpTime = 0
+discordcont = "None"
+discordurl = "None"
 errcode = "Incorrect response from the host"
-print("Uptimer 1.3.0, build 19") #version and build
+print("Uptimer 1.3.1, build 8") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
 print("EVA#1130 - helping in scripting methods and fix errors")
-print("Rysik5318#7967 - help in the implementation of the idea, as well as in the method: HTTP")
-sleep(2)
+print("Rysik5318#7967 - help in the implementation of the idea, as well as in the method: request")
+sleep(1.5)
 print()
 print("methods:") #methods
 print("ping - the easiest verification method !dont work with ports! (can be blocked by host)") # ping method
@@ -26,9 +29,15 @@ method = input("method: ")
 print()
 sleept = input("sleep time in sec. (use 30 or 240 to get the best result): ") #sleeptime
 print()
-discordurl = input("discord webhook url: ") # discord webhook url setting
+print("message types: ")
+print("1 - discord webhook")
+print("2 - Using your API")
 print()
-discordcont = input("discord message on error: ") # discord message setting
+msgtype = input("Type:")
+if msgtype == "1" :
+ discordurl = input("discord webhook url: ") # discord webhook url setting
+ print()
+ discordcont = input("discord message on error: ") # discord message setting
 param = {
   "content": "Message from the user: " + discordcont,
   "embeds": [
@@ -39,7 +48,12 @@ param = {
     }
   ],
   "attachments": []
-} # discord message
+ } # discord message
+if msgtype == "2" :
+ import json
+ API_URL = input("API url: ") # API url
+ API_JSON = input("json data: ") # API Json now it's string
+ API_JSONR = json.loads(API_JSON) #now it's json type
 
 if method == "ping": # ping method start
  print()
@@ -49,6 +63,7 @@ if method == "ping": # ping method start
    if response == 0:
      print("Server is ok") # OK res
      result = True
+     UpTime = UpTime + 1
 
    else:
     print("server error on connect!") # bad res
@@ -57,8 +72,12 @@ if method == "ping": # ping method start
     errcode = response
 
     if sus == 2 :
-     requests.post(discordurl, json = param)
-     sus = 0
+     if msgtype == "1" :   #DISC. WEBHOOK
+       requests.post(discordurl, json = param)
+       sus = 0
+     if msgtype == "2": #API TYPE
+       requests.post(API_URL, json = API_JSONR)
+       sus = 0
    sleep(int(sleept)) # ping method end
 
 if method == "natcat" : # natcat method start
@@ -89,8 +108,12 @@ if method == "natcat" : # natcat method start
         sus = sus + 1
 
     if sus == 2 :
-     requests.post(discordurl, json = param)
-     sus = 0
+     if msgtype == "1" :   #DISC. WEBHOOK
+      requests.post(discordurl, json = param)
+      sus = 0
+     if msgtype == "2" : #API TYPE
+      requests.post(API_URL, json = API_JSONR)
+      sus = 0
     sleep(int(sleept)) # natcat method end
 
 if method == "request" : # HTTP method start
@@ -121,8 +144,12 @@ if method == "request" : # HTTP method start
         sus = sus + 1
 
     if sus == 2 :
-     requests.post(discordurl, json = param)
-     sus = 0
+     if msgtype == "1" :   #DISC. WEBHOOK
+      requests.post(discordurl, json = param)
+      sus = 0
+     if msgtype == "2" : #API TYPE
+      requests.post(API_URL, json = API_JSONR)
+      sus = 0
     sleep(int(sleept)) # HTTP method end
 
 if method == "urllib" : # urllib method start
@@ -137,9 +164,9 @@ if method == "urllib" : # urllib method start
      http = urllib3.PoolManager()
      if rtype == "1" :
       i100 = http.request('HEAD', url) #head
-     if rtype == "2"   :
+     if rtype == "2" :
       i100 = http.request('POST', url) #post
-     if rtype == "3"   :
+     if rtype == "3" :
       i100 = http.request('GET', url) #get
      status = i100.status
      print(i100.status)
@@ -153,33 +180,43 @@ if method == "urllib" : # urllib method start
         errcode = str(i100.status)
         sus = sus + 1
 
-     if sus == 2 :
-      requests.post(discordurl, json = param)
-      sus = 0
+     if sus == 2:
+        if msgtype == "1" :  # DISC. WEBHOOK
+          requests.post(discordurl, json=param)
+          sus = 0
+        if msgtype == "2" :  # API TYPE
+         requests.post(API_URL, json=API_JSONR)
+         sus = 0
      sleep(int(sleept)) #urllib method end
 
 if method == "ping3" : #ping3 method start
     from ping3 import ping, verbose_ping
-    ip = input("IP: ")
-    maxms = input("Max MS: ")
+    ip = input("IP: ") #ip
+
+    maxms = input("Max MS: ") #max ms
+
     while True :
      i200 = ping(ip, unit='ms')
      print(i200)
+
      if i200 != None :
         print("server is ok!")
+
      try:
       if float(i200) >= float(maxms) :
          print("Warning: ms > maxms!")
          sus2 = sus2 + 1
      except TypeError :
          print("")
+
      if i200 == None :
          print("server error on connect!")
          sus = sus + 1
 
      if sus == 2 :
-      errcode = "Incorrect response from the host"
-      param = {
+       if  msgtype == "1" :
+        errcode = "Incorrect response from the host"
+        param = {
           "content": "Message from the user: " + discordcont,
           "embeds": [
               {
@@ -189,11 +226,16 @@ if method == "ping3" : #ping3 method start
               }
           ],
           "attachments": []
-      }
-      requests.post(discordurl, json = param)
-      sus = 0
+         } #Discord error
+        requests.post(discordurl, json = param)
+        sus = 0
+
+       if msgtype == "2":  # API TYPE
+          requests.post(API_URL, json = API_JSONR)
+          sus = 0
      if sus2 == 2 :
-      param = {
+      if msgtype == "1" : #disc. webhook
+        param = {
              "content": "Message from the user: " + discordcont,
              "embeds": [
                  {
@@ -203,9 +245,12 @@ if method == "ping3" : #ping3 method start
                  }
              ],
              "attachments": []
-         }  # discord message
-      requests.post(discordurl, json = param)
-      sus2 = 0
+         }  # discord warn
+        requests.post(discordurl, json = param)
+        sus2 = 0
+      if msgtype == "2":  # API TYPE
+            requests.post(API_URL, json = API_JSONR)
+            sus2 = 0
      sleep(int(sleept)) #ping3 method end
 print("")
 print("do you know that you need to choose a method?")
