@@ -2,6 +2,7 @@
 import os
 from time import sleep
 import requests
+
 result = 0
 port = 0
 sus = 0
@@ -10,7 +11,8 @@ UpTime = 0
 discordcont = "None"
 discordurl = "None"
 errcode = "Incorrect response from the host"
-print("Uptimer 1.3.1, build 8") #version and build
+
+print("Uptimer 1.3.1.1, build 3") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -69,7 +71,6 @@ if method == "ping": # ping method start
     print("server error on connect!") # bad res
     sus = sus + 1
     result = False
-    errcode = response
 
     if sus == 2 :
      if msgtype == "1" :   #DISC. WEBHOOK
@@ -104,7 +105,6 @@ if method == "natcat" : # natcat method start
     else:
         print("server error on connect!") # bad res
         result = False
-        errcode = nc
         sus = sus + 1
 
     if sus == 2 :
@@ -140,11 +140,23 @@ if method == "request" : # HTTP method start
     else:
         print("server error on connect!") # bad res
         result = False
-        errcode = str(r.status_code)
         sus = sus + 1
 
     if sus == 2 :
      if msgtype == "1" :   #DISC. WEBHOOK
+      errcode2 = str(r.status_code)
+      print(errcode)
+      param = {
+          "content": "Message from the user: " + discordcont,
+          "embeds": [
+              {
+                  "title": "HTTP error!",
+                  "description": errcode2,
+                  "color": 16711680
+              }
+          ],
+          "attachments": []
+      }
       requests.post(discordurl, json = param)
       sus = 0
      if msgtype == "2" : #API TYPE
@@ -177,11 +189,23 @@ if method == "urllib" : # urllib method start
      else:
         print("server error on connect!") # bad res
         result = False
-        errcode = str(i100.status)
+        errcode2 = str(i100.status)
         sus = sus + 1
 
      if sus == 2:
         if msgtype == "1" :  # DISC. WEBHOOK
+          errcode2 == str(i100.status)
+          param = {
+              "content": "Message from the user: " + discordcont,
+              "embeds": [
+                  {
+                      "title": "HTTP error!",
+                      "description": errcode2,
+                      "color": 16711680
+                  }
+              ],
+              "attachments": []
+          }
           requests.post(discordurl, json=param)
           sus = 0
         if msgtype == "2" :  # API TYPE
