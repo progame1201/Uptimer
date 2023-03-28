@@ -12,7 +12,7 @@ discordcont = "None"
 discordurl = "None"
 errcode = "Incorrect response from the host"
 
-print("Uptimer 1.3.1.1, build 3") #version and build
+print("Uptimer 1.3.1.2, build 2") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -145,7 +145,6 @@ if method == "request" : # HTTP method start
     if sus == 2 :
      if msgtype == "1" :   #DISC. WEBHOOK
       errcode2 = str(r.status_code)
-      print(errcode)
       param = {
           "content": "Message from the user: " + discordcont,
           "embeds": [
@@ -263,8 +262,8 @@ if method == "ping3" : #ping3 method start
              "content": "Message from the user: " + discordcont,
              "embeds": [
                  {
-                     "title": "Warning!",
-                     "description": "ms > maxms! check the host!",
+                     "title": "Warning! ms > maxms!",
+                     "description": "ping = " + str(i200) + "ms",
                      "color": 16763904
                  }
              ],
