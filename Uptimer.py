@@ -12,7 +12,7 @@ discordcont = "None"
 discordurl = "None"
 errcode = "Incorrect response from the host"
 
-print("Uptimer 1.3.1.2, build 2") #version and build
+print("Uptimer 1.3.1.3, build 1") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -74,6 +74,17 @@ if method == "ping": # ping method start
 
     if sus == 2 :
      if msgtype == "1" :   #DISC. WEBHOOK
+       param = {
+             "content": "Message from the user: " + discordcont,
+             "embeds": [
+                 {
+                     "title": "Ping request error!",
+                     "description": errcode,
+                     "color": 16711680
+                 }
+             ],
+             "attachments": []
+       }
        requests.post(discordurl, json = param)
        sus = 0
      if msgtype == "2": #API TYPE
@@ -109,6 +120,17 @@ if method == "natcat" : # natcat method start
 
     if sus == 2 :
      if msgtype == "1" :   #DISC. WEBHOOK
+      param = {
+             "content": "Message from the user: " + discordcont,
+             "embeds": [
+                 {
+                     "title": "Request error!",
+                     "description": errcode,
+                     "color": 16711680
+                 }
+             ],
+             "attachments": []
+      }
       requests.post(discordurl, json = param)
       sus = 0
      if msgtype == "2" : #API TYPE
@@ -243,8 +265,8 @@ if method == "ping3" : #ping3 method start
           "content": "Message from the user: " + discordcont,
           "embeds": [
               {
-                  "title": "Request error!",
-                  "description": errcode,
+                  "title": "Ping3 request error!",
+                  "description": "ping3 response:" + str(i200),
                   "color": 16711680
               }
           ],
