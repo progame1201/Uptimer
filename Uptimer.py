@@ -11,8 +11,19 @@ UpTime = 0
 discordcont = "None"
 discordurl = "None"
 errcode = "Incorrect response from the host"
-
-print("Uptimer 1.3.1.3, build 1") #version and build
+Checksuccesstimes = 0
+param = {
+  "content": "Message from the user: " + discordcont,
+  "embeds": [
+    {
+      "title": "Request error!",
+      "description": errcode,
+      "color": 16711680
+    }
+  ],
+  "attachments": []
+} # discord message
+print("Uptimer 1.3.2, build 2") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -40,17 +51,7 @@ if msgtype == "1" :
  discordurl = input("discord webhook url: ") # discord webhook url setting
  print()
  discordcont = input("discord message on error: ") # discord message setting
-param = {
-  "content": "Message from the user: " + discordcont,
-  "embeds": [
-    {
-      "title": "Request error!",
-      "description": errcode,
-      "color": 16711680
-    }
-  ],
-  "attachments": []
- } # discord message
+
 if msgtype == "2" :
  import json
  API_URL = input("API url: ") # API url
@@ -64,13 +65,11 @@ if method == "ping": # ping method start
    response = os.system("ping -w 2 " + ip) # pinging
    if response == 0:
      print("Server is ok") # OK res
-     result = True
-     UpTime = UpTime + 1
+     Checksuccesstimes = Checksuccesstimes + 1
 
    else:
     print("server error on connect!") # bad res
     sus = sus + 1
-    result = False
 
     if sus == 2 :
      if msgtype == "1" :   #DISC. WEBHOOK
@@ -79,7 +78,7 @@ if method == "ping": # ping method start
              "embeds": [
                  {
                      "title": "Ping request error!",
-                     "description": errcode,
+                     "description": "error: " + str(errcode) + " good requests: " + str(Checksuccesstimes),
                      "color": 16711680
                  }
              ],
@@ -87,6 +86,7 @@ if method == "ping": # ping method start
        }
        requests.post(discordurl, json = param)
        sus = 0
+       Checksuccesstimes = 0
      if msgtype == "2": #API TYPE
        requests.post(API_URL, json = API_JSONR)
        sus = 0
@@ -111,11 +111,10 @@ if method == "natcat" : # natcat method start
 
     if nc == 0:
          print("Server is ok") # OK res
-         result = True
+         Checksuccesstimes = Checksuccesstimes + 1
 
     else:
         print("server error on connect!") # bad res
-        result = False
         sus = sus + 1
 
     if sus == 2 :
@@ -125,7 +124,7 @@ if method == "natcat" : # natcat method start
              "embeds": [
                  {
                      "title": "Request error!",
-                     "description": errcode,
+                     "description": "error: " + str(errcode) + " good requests: " + str(Checksuccesstimes),
                      "color": 16711680
                  }
              ],
@@ -133,6 +132,7 @@ if method == "natcat" : # natcat method start
       }
       requests.post(discordurl, json = param)
       sus = 0
+      Checksuccesstimes = 0
      if msgtype == "2" : #API TYPE
       requests.post(API_URL, json = API_JSONR)
       sus = 0
@@ -157,11 +157,10 @@ if method == "request" : # HTTP method start
 
     if status == 200 :
          print("server is ok") # OK res
-         result = True
+         Checksuccesstimes = Checksuccesstimes + 1
 
     else:
         print("server error on connect!") # bad res
-        result = False
         sus = sus + 1
 
     if sus == 2 :
@@ -172,7 +171,7 @@ if method == "request" : # HTTP method start
           "embeds": [
               {
                   "title": "HTTP error!",
-                  "description": errcode2,
+                  "description": "error: " + str(errcode2) + " good requests: " + str(Checksuccesstimes),
                   "color": 16711680
               }
           ],
@@ -180,6 +179,7 @@ if method == "request" : # HTTP method start
       }
       requests.post(discordurl, json = param)
       sus = 0
+      Checksuccesstimes = 0
      if msgtype == "2" : #API TYPE
       requests.post(API_URL, json = API_JSONR)
       sus = 0
@@ -205,11 +205,10 @@ if method == "urllib" : # urllib method start
      print(i100.status)
      if status == 200 :
          print("server is ok") # OK res
-         result = True
+         Checksuccesstimes = Checksuccesstimes + 1
 
      else:
         print("server error on connect!") # bad res
-        result = False
         errcode2 = str(i100.status)
         sus = sus + 1
 
@@ -221,7 +220,7 @@ if method == "urllib" : # urllib method start
               "embeds": [
                   {
                       "title": "HTTP error!",
-                      "description": errcode2,
+                      "description": "error: " + str(errcode2) + " good requests: " + str(Checksuccesstimes),
                       "color": 16711680
                   }
               ],
@@ -229,6 +228,7 @@ if method == "urllib" : # urllib method start
           }
           requests.post(discordurl, json=param)
           sus = 0
+          Checksuccesstimes = 0
         if msgtype == "2" :  # API TYPE
          requests.post(API_URL, json=API_JSONR)
          sus = 0
@@ -246,6 +246,7 @@ if method == "ping3" : #ping3 method start
 
      if i200 != None :
         print("server is ok!")
+        Checksuccesstimes = Checksuccesstimes + 1
 
      try:
       if float(i200) >= float(maxms) :
@@ -266,7 +267,7 @@ if method == "ping3" : #ping3 method start
           "embeds": [
               {
                   "title": "Ping3 request error!",
-                  "description": "ping3 response:" + str(i200),
+                  "description": "ping3 response:" + str(i200) + " good requests: " + str(Checksuccesstimes),
                   "color": 16711680
               }
           ],
@@ -274,6 +275,7 @@ if method == "ping3" : #ping3 method start
          } #Discord error
         requests.post(discordurl, json = param)
         sus = 0
+        Checksuccesstimes = 0
 
        if msgtype == "2":  # API TYPE
           requests.post(API_URL, json = API_JSONR)
