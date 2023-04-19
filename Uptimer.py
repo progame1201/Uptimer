@@ -8,6 +8,7 @@ port = 0
 sus = 0
 sus2 = 0
 UpTime = 0
+notonline = 0
 discordcont = "None"
 discordurl = "None"
 errcode = "Incorrect response from the host"
@@ -23,7 +24,7 @@ param = {
   ],
   "attachments": []
 } # discord message
-print("Uptimer 1.3.2, build 2") #version and build
+print("Uptimer 1.4.0, build 8") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -71,8 +72,27 @@ if method == "ping": # ping method start
     print("server error on connect!") # bad res
     sus = sus + 1
 
-    if sus == 2 :
-     if msgtype == "1" :   #DISC. WEBHOOK
+   if response == 0:
+    if notonline == 1 : # conn check
+        print("connection established")
+        notonline = 0
+        param = {
+             "content": "",
+             "embeds": [
+                 {
+                     "title": "ping connection established!",
+                     "description": "now server online.",
+                     "color": 3717716
+                 }
+             ],
+             "attachments": []
+        }
+        requests.post(discordurl, json = param)
+        sus = 0
+   if sus == 2 : #sus
+     if notonline == 0 :
+      if msgtype == "1" :   #DISC. WEBHOOK
+       notonline = 1
        param = {
              "content": "Message from the user: " + discordcont,
              "embeds": [
@@ -87,7 +107,7 @@ if method == "ping": # ping method start
        requests.post(discordurl, json = param)
        sus = 0
        Checksuccesstimes = 0
-     if msgtype == "2": #API TYPE
+      if msgtype == "2": #API TYPE
        requests.post(API_URL, json = API_JSONR)
        sus = 0
    sleep(int(sleept)) # ping method end
@@ -116,10 +136,29 @@ if method == "natcat" : # natcat method start
     else:
         print("server error on connect!") # bad res
         sus = sus + 1
+    if nc == 0:
+     if notonline == 1:  # conn check
+        print("connection established")
+        notonline = 0
+        param = {
+        "content": "",
+        "embeds": [
+        {
+        "title": "natcat connection established!",
+        "description": "now server online.",
+        "color": 3717716
+        }
+        ],
+        "attachments": []
+        }
+        requests.post(discordurl, json=param)
+        sus = 0
 
     if sus == 2 :
-     if msgtype == "1" :   #DISC. WEBHOOK
-      param = {
+     if notonline == 0 :
+      if msgtype == "1" :   #DISC. WEBHOOK
+       notonline = 1
+       param = {
              "content": "Message from the user: " + discordcont,
              "embeds": [
                  {
@@ -129,13 +168,13 @@ if method == "natcat" : # natcat method start
                  }
              ],
              "attachments": []
-      }
-      requests.post(discordurl, json = param)
-      sus = 0
-      Checksuccesstimes = 0
-     if msgtype == "2" : #API TYPE
-      requests.post(API_URL, json = API_JSONR)
-      sus = 0
+       }
+       requests.post(discordurl, json = param)
+       sus = 0
+       Checksuccesstimes = 0
+      if msgtype == "2" : #API TYPE
+       requests.post(API_URL, json = API_JSONR)
+       sus = 0
     sleep(int(sleept)) # natcat method end
 
 if method == "request" : # HTTP method start
@@ -163,10 +202,30 @@ if method == "request" : # HTTP method start
         print("server error on connect!") # bad res
         sus = sus + 1
 
+    if status == 200 :
+        if notonline == 1:  # conn check
+            print("connection established")
+            notonline = 0
+            param = {
+                "content": "",
+                "embeds": [
+                    {
+                        "title": "requests connection established!",
+                        "description": "now server online.",
+                        "color": 3717716
+                    }
+                ],
+                "attachments": []
+            }
+            requests.post(discordurl, json=param)
+            sus = 0
+
     if sus == 2 :
-     if msgtype == "1" :   #DISC. WEBHOOK
-      errcode2 = str(r.status_code)
-      param = {
+     if notonline == 0 :
+      if msgtype == "1" :   #DISC. WEBHOOK
+       notonline = 1
+       errcode2 = str(r.status_code)
+       param = {
           "content": "Message from the user: " + discordcont,
           "embeds": [
               {
@@ -176,13 +235,13 @@ if method == "request" : # HTTP method start
               }
           ],
           "attachments": []
-      }
-      requests.post(discordurl, json = param)
-      sus = 0
-      Checksuccesstimes = 0
-     if msgtype == "2" : #API TYPE
-      requests.post(API_URL, json = API_JSONR)
-      sus = 0
+       }
+       requests.post(discordurl, json = param)
+       sus = 0
+       Checksuccesstimes = 0
+      if msgtype == "2" : #API TYPE
+       requests.post(API_URL, json = API_JSONR)
+       sus = 0
     sleep(int(sleept)) # HTTP method end
 
 if method == "urllib" : # urllib method start
@@ -211,9 +270,27 @@ if method == "urllib" : # urllib method start
         print("server error on connect!") # bad res
         errcode2 = str(i100.status)
         sus = sus + 1
-
+     if status == 200:
+      if notonline == 1:  # conn check
+        print("connection established")
+        notonline = 0
+        param = {
+        "content": "",
+        "embeds": [
+        {
+        "title": "urllib connection established!",
+        "description": "now server online.",
+        "color": 3717716
+        }
+        ],
+        "attachments": []
+        }
+        requests.post(discordurl, json=param)
+        sus = 0
      if sus == 2:
+      if notonline == 0 :
         if msgtype == "1" :  # DISC. WEBHOOK
+          notonline = 1
           errcode2 == str(i100.status)
           param = {
               "content": "Message from the user: " + discordcont,
@@ -258,9 +335,27 @@ if method == "ping3" : #ping3 method start
      if i200 == None :
          print("server error on connect!")
          sus = sus + 1
-
+     if i200 != None :
+      if notonline == 1:  # conn check
+        print("connection established")
+        notonline = 0
+        param = {
+        "content": "",
+        "embeds": [
+        {
+        "title": "ping3 connection established!",
+        "description": "now server online.",
+        "color": 3717716
+        }
+        ],
+        "attachments": []
+        }
+        requests.post(discordurl, json=param)
+        sus = 0
      if sus == 2 :
+      if notonline == 0 :
        if  msgtype == "1" :
+        notonline = 1
         errcode = "Incorrect response from the host"
         param = {
           "content": "Message from the user: " + discordcont,
