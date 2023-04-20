@@ -7,6 +7,8 @@ Python (https://python.org/)
 requests module (cmd -> pip install requests)
 urllib3 module (cmd -> pip install urllib3) if you need to use the urllib method
 ping3 module (cmd -> pip install ping3) if you need to use the ping3 method
+configparser module (cmd -> pip install configparser) 
+Or you can use my sh or bat file to install all modules
 
 you need to write all links with https://
 
