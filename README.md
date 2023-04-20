@@ -17,8 +17,9 @@ request - sends a head request to a domain and does not stop until 200 response 
 urllib - sends a head request to a domain and does not stop until 200 response (may encounter difficulties with anti ddos services) (needs urllib3 module cmd -> pip install urllib3). Ping3 - the method is similar to ping, but also compare ms with the set maximum. Needs installed ping3 module (cmd -> pip install ping3)
 
 You can use your API or discord webhook for notifications
-```
+
 CONFIG:
+```
 [Settings] # Settings
 configtrue = False # config is on?
 ip = 0.0.0.0 # IP. if you need to use the site, write the full link https://example.com
