@@ -5,6 +5,13 @@ import requests
 import configparser
 import os.path
 import json
+print("Uptimer 1.6.0, build 3") #version and build
+print()
+print("Info") #info
+print("progame1201#8037 - general code writer")
+print("EVA#1130 - helped with coding and bug fixing at first ")
+print("Rysik5318#7967 - helped in the implementation of the idea, as well as in tests with the urllib and request methods")
+print("moseechev#6235 - tester")
 #config generation
 pathhere = os.path.exists(path="config.ini") #config here?
 config = configparser.ConfigParser()
@@ -113,13 +120,6 @@ if method == "ask" :
   print("DEBUG: CONFIG READED")
   method = input("method: ")
 
-print("Uptimer 1.5.0, build 24") #version and build
-print()
-print("Info") #info
-print("progame1201#8037 - general code writer")
-print("EVA#1130 - helped with coding and bug fixing at first ")
-print("Rysik5318#7967 - helped in the implementation of the idea, as well as in tests with the urllib and request methods")
-print("moseechev#6235 - tester")
 sleep(1.5)
 if configtrue == "False" :
  print()
@@ -129,8 +129,10 @@ if configtrue == "False" :
  print("request - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
  print("urllib - HTTP/S verification method !dont work with IP and ports! (can be blocked by host) needs instaled urllib3 module") # urllib3 method
  print("ping3 - the method is similar to ping, but also compare ms with the set maximum. Needs installed ping3 module") # ping3 method
+ print("bytesmax - uses the client's connection to the server to transmit incoming traffic(server its your machine) may not be stable")
  print()
  method = input("method: ")
+if method != "bytesmax" :
  print()
  sleept = input("sleep time in sec. (use 30 or 240 to get the best result): ") #sleeptime
  print()
@@ -488,5 +490,10 @@ if method == "ping3" : #ping3 method start
             requests.post(API_URL, json = API_JSONR)
             sus2 = 0
      sleep(int(sleept)) #ping3 method end
+if method == "bytesmax":
+    while True:
+     print("the project description contains full documentation how to the use of this method")
+     import Uptimerbytesmaxserver.py
+     sleep(20)
 print("")
 print("do you know that you need to choose a method?")
