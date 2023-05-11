@@ -2,43 +2,111 @@ import os
 import socket
 import io
 from time import sleep
-#build 20
+import psutil
+import configparser
+#build 23
+configtrue = "False"
+readerror = False
+#config generation
+pathhere = os.path.exists(path="configbytesmaxclient.ini") #config here?
+config = configparser.ConfigParser()
+if pathhere == True : #regen start
+  errorread = False
+  try:
+    config.read("configbytesmaxclient.ini") #read
+  except AttributeError: # Attribute error?
+    errorread = True
+  if errorread == False : # read error?
+    configversion = config.get("Info", "build")
+    if configversion != "22" :
+     os.remove("configbytesmaxclient.ini")
+pathhere = os.path.exists(path="configbytesmaxclient.ini") #config here?
+#config generation end
+if pathhere == False : #if config not here
+ def createConfig(path): #conf create
+    config = configparser.ConfigParser()
+    config.add_section("Settings") # SETTINGS
+    config.set("Settings", "configtrue", "False") # CONF ENABLE?
+    config.set("Settings", "ip", "0.0.0.0") # IP
+    config.set("Settings", "port", "0000") # PORT
+    config.add_section("Info")
+    config.set("Info", "build", "22") # cfg version
+    with open(path, "w") as config_file:
+        config.write(config_file)
+
+ if __name__ == "__main__":
+     path = "configbytesmaxclient.ini"
+     createConfig(path)
+# config generation end
+if pathhere == True :
+ try:
+  config.read("configbytesmaxclient.ini")
+ except AttributeError:
+  print("")
+  readerror = True
+
+ if readerror == False :
+   ip = config.get("Settings", "ip")
+   port = config.get("Settings", "port")
+   configtrue = config.get("Settings", "configtrue")
+
 sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 unsus = 0
 download = "0"
 downloadnow = "0"
 failed = False
-port = int(input("port= "))
-ip = input("ip=")
+if configtrue == "False" :
+ port = input("port= ")
+ ip = input("ip=")
+
+def Restart():
+  sleeptime = 5
+  while True:
+   if sleeptime != 0 :
+    print("restart in " + str(sleeptime))
+    sleep(1)
+    sleeptime = sleeptime - 1
+   if sleeptime == 0 :
+    print("\n" * 100)
+
+    os.system("python Uptimerbytesmaxclient.py")
+    exit("exit with error. Auto restarted.")
 sleep(2)
 try:
  print("DEBUG: Connecting...")
  sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+ port = int(port)
  sock.connect((ip, port))
  print("DEBUG: Connected")
 except ConnectionError:
- print("connection error: ConnectionError")
+ Restart()
+ exit("connection error: ConnectionError")
  sleep(999999)
 except ConnectionAbortedError:
-  print("connection error: ConnectionAborted")
+  Restart()
+  exit("connection error: ConnectionAbortedError")
   sleep(999999)
 except ConnectionResetError:
- print("connection error: ConnectionReset")
+ Restart()
+ exit("connection error: ConnectionResetError")
  sleep(999999)
 except ConnectionRefusedError:
- print("connection error: ConnectionRefused")
+ Restart()
+ exit("connection error: ConnectionRefusedError")
  sleep(999999)
 except BrokenPipeError:
- print("connection error: BrokenPipeError")
+ Restart()
+ exit("connection error: BrokenPipeError")
  sleep(999999)
 except TimeoutError:
- print("connection error: TimeoutError")
+ Restart()
+ exit("connection error: TimeoutError")
  sleep(999999)
 except OSError:
- print("connection error: OSError")
+ Restart()
+ exit("connection error: OSError")
  sleep(999999)
 while True :
-  import psutil
   UPDATE_DELAY = 1
 
   net_stat = psutil.net_io_counters()
@@ -56,27 +124,33 @@ while True :
    print("data sended")
    data = ""
   except ConnectionAbortedError:
-   print("Disconnection: Connection error: ConnectionAborted")
+   Restart()
+   exit("Disconnection: Connection error: ConnectionAborted")
    sleep(60)
    break
   except ConnectionResetError:
-   print("Disconnection: Connection error: ConnectionReset")
+   Restart()
+   exit("Disconnection: Connection error: ConnectionReset")
    sleep(60)
    break
   except ConnectionRefusedError:
-   print("Disconnection: Connection error: ConnectionRefused")
+   Restart()
+   exit("Disconnection: Connection error: ConnectionRefused")
    sleep(60)
    break
   except BrokenPipeError:
-   print("Disconnection: Connection error: BrokenPipeError")
+   Restart()
+   exit("Disconnection: Connection error: BrokenPipeError")
    sleep(60)
    break
   except OSError:
-   print("Disconnection: Connection error: OSError")
+   Restart()
+   exit("Disconnection: Connection error: OSError")
    sleep(60)
    break
   except:
-   print("Disconnection: Connection error: UndetectedError")
+   Restart()
+   exit("Disconnection: Connection error: UndetectedError")
    sleep(60)
    break
   sleep(3)
