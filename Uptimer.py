@@ -5,7 +5,7 @@ import requests
 import configparser
 import os.path
 import json
-print("Uptimer 1.6.0, build 3") #version and build
+print("Uptimer 1.6.1, build 1") #version and build
 print()
 print("Info") #info
 print("progame1201#8037 - general code writer")
@@ -117,7 +117,7 @@ if method == "ask" :
   print("request - HTTP/S verification method !dont work with IP and ports! (can be blocked by host)") # HTTP method
   print("urllib - HTTP/S verification method !dont work with IP and ports! (can be blocked by host) needs instaled urllib3 module") # urllib3 method
   print("ping3 - the method is similar to ping, but also compare ms with the set maximum. Needs installed ping3 module") # ping3 method
-  print("DEBUG: CONFIG READED")
+  print("bytesmax - uses the client's connection to the server to transmit incoming traffic(server its your machine) may not be stable")
   method = input("method: ")
 
 sleep(1.5)
@@ -150,6 +150,7 @@ if method != "bytesmax" :
   API_URL = input("API url: ") # API url
   API_JSON = input("json data: ") # API Json now it's string
   API_JSONR = json.loads(API_JSON) #now it's json type
+
 
 if method == "ping": # ping method start
  if configtrue == "False" :
